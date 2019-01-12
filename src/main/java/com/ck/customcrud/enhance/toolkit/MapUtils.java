@@ -3,8 +3,8 @@ package com.ck.customcrud.enhance.toolkit;
 
 import com.ck.customcrud.enhance.enumerations.TableInfoEnum;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.beanutils.PropertyUtilsBean;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -32,16 +32,17 @@ public class MapUtils {
      * @return .
      * @author 陈坤
      */
-    private static Map<String, Object> beanToMap(Object obj, boolean excludeId, boolean excludeNull, List<String> strings) {
+    private static Map<String, Object> beanToMap(Object obj, Class<?> clazz, boolean excludeId, boolean excludeNull, List<String> strings) {
         Map<String, Object> params = new HashMap<>();
-        PropertyUtilsBean propertyUtilsBean = new PropertyUtilsBean();
         for (String name : strings) {
             // 逆向驼峰转换
             String s = StringUtils.humpConversion(name, false);
             Object property;
             try {
-                property = propertyUtilsBean.getNestedProperty(obj, name);
-            } catch (Exception e) {
+                Field declaredField = clazz.getDeclaredField(name);
+                declaredField.setAccessible(true);
+                property = declaredField.get(obj);
+            } catch (IllegalAccessException | NoSuchFieldException e) {
                 throw new RuntimeException(e);
             }
             // 是否排除null值
@@ -88,7 +89,7 @@ public class MapUtils {
         }
         // 查询/删除 obj为Null
         if (!Objects.isNull(obj)) {
-            Map<String, Object> entityMap = beanToMap(obj, excludeId, excludeNull, tableInfo.getTableColumnList());
+            Map<String, Object> entityMap = beanToMap(obj, clazz, excludeId, excludeNull, tableInfo.getTableColumnList());
             /*
              * 不排除id并且id为null, 则使用IdWorker生成主键.
              */
