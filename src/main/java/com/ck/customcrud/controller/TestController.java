@@ -1,8 +1,8 @@
 package com.ck.customcrud.controller;
 
-import com.ck.customcrud.enhance.toolkit.TableInfoHelper;
 import com.ck.customcrud.entity.TestUsers;
 import com.ck.customcrud.service.TestService;
+import com.ck.enhance.toolkit.TableInfoHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +33,7 @@ public class TestController {
     }
 
     @GetMapping("/{id}")
-    public TestUsers getById(@PathVariable Integer id) {
+    public TestUsers getById(@PathVariable Long id) {
         return this.testService.getOne(id);
     }
 

@@ -1,6 +1,6 @@
 package com.ck.customcrud.entity;
 
-import com.ck.customcrud.enhance.annotations.TableName;
+import com.ck.enhance.annotations.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
 

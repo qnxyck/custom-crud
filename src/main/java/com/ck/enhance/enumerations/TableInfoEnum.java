@@ -1,4 +1,4 @@
-package com.ck.customcrud.enhance.enumerations;
+package com.ck.enhance.enumerations;
 
 /**
  * @author 陈坤

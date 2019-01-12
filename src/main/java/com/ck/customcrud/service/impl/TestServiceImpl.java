@@ -1,9 +1,9 @@
 package com.ck.customcrud.service.impl;
 
-import com.ck.customcrud.enhance.Interfaces.impl.BaseServiceImpl;
 import com.ck.customcrud.entity.TestUsers;
 import com.ck.customcrud.mapper.TestMapper;
 import com.ck.customcrud.service.TestService;
+import com.ck.enhance.Interfaces.impl.BaseServiceImpl;
 import org.springframework.stereotype.Service;
 
 /**

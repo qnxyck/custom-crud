@@ -1,4 +1,4 @@
-package com.ck.customcrud.enhance.Interfaces;
+package com.ck.enhance.Interfaces;
 
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
@@ -40,12 +40,18 @@ public interface BaseMapper<T> {
      * @return boolean
      */
     @Insert("<script>" +
-            "insert into ${ckMap.TABLE_NAME}" +
-            "   <foreach collection='ckMap.ENTITY_MAP.keys' index='index' item='item' open='(' separator=',' close=')'>" +
+            "insert into ${ckMap.TABLE_NAME}(" +
+            "   <if test='ckMap.TABLE_ID_VALUE != null'>" +
+            "       ID," +
+            "   </if>" +
+            "   <foreach collection='ckMap.ENTITY_MAP.keys' index='index' item='item' separator=',' close=')'>" +
             "       ${item}" +
             "   </foreach>" +
-            "VALUES" +
-            "   <foreach collection='ckMap.ENTITY_MAP' index='index' item='item1' open='(' separator=',' close=')'>" +
+            "VALUES(" +
+            "   <if test='ckMap.TABLE_ID_VALUE != null'>" +
+            "       #{ckMap.TABLE_ID_VALUE}," +
+            "   </if>" +
+            "   <foreach collection='ckMap.ENTITY_MAP' index='index' item='item1' separator=',' close=')'>" +
             "       #{item1}" +
             "   </foreach>" +
             "</script>")
@@ -64,7 +70,7 @@ public interface BaseMapper<T> {
             "   <foreach collection='ckMap.ENTITY_MAP.keys' index='index' item='item' open='' separator=',' close=''>" +
             "       ${item} = #{ckMap.ENTITY_MAP[${item}]}" +
             "   </foreach>" +
-            " WHERE ID = ${ckMap.TABLE_ID_VALUE}" +
+            " WHERE ID = #{ckMap.TABLE_ID_VALUE}" +
             "</script>")
     boolean updateById(@Param("ckMap") Map<String, Object> map);
 

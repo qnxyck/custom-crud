@@ -1,4 +1,4 @@
-package com.ck.customcrud.enhance.Interfaces;
+package com.ck.enhance.Interfaces;
 
 import java.util.Collection;
 

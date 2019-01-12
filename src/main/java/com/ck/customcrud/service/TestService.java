@@ -1,7 +1,7 @@
 package com.ck.customcrud.service;
 
-import com.ck.customcrud.enhance.Interfaces.BaseService;
 import com.ck.customcrud.entity.TestUsers;
+import com.ck.enhance.Interfaces.BaseService;
 
 /**
  * @author 陈坤

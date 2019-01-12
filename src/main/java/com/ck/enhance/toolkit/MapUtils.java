@@ -1,7 +1,7 @@
-package com.ck.customcrud.enhance.toolkit;
+package com.ck.enhance.toolkit;
 
 
-import com.ck.customcrud.enhance.enumerations.TableInfoEnum;
+import com.ck.enhance.enumerations.TableInfoEnum;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
@@ -61,20 +61,40 @@ public class MapUtils {
 
     /**
      * 构建Map信息
-     *
-     * @param id           id
-     * @param tableColumns 自定义字段
-     * @param clazz        c
      * @param obj          操作实体
      * @param excludeId    .
      * @param excludeNull  .
      * @return Map
      * @author 陈坤
      */
-    public static Map<String, Object> setMap(Object id, Collection<String> tableColumns, Class clazz, Object obj, boolean excludeId, boolean excludeNull) {
+
+    // 更新/修改
+    public static Map<String, Object> setMap1(Object obj, TableInfo tableInfo, boolean excludeId, boolean excludeNull) {
         Map<String, Object> map = new HashMap<>();
-        TableInfo tableInfo = TableInfoHelper.getTableInfoCache(clazz);
-        // 添加/修改参数中的 表名称
+        Object id = null;
+        Map<String, Object> entityMap = beanToMap(obj, tableInfo.getClazz(), excludeId, excludeNull, tableInfo.getTableColumnList());
+        /*
+         * 不排除id并且id为null, 则使用IdWorker生成主键.
+         */
+        if (!excludeId) {
+            if (entityMap.get(TableInfoEnum.id.name()) == null) {
+                id = IdWorker.getId();
+            } else {
+                id = entityMap.get(TableInfoEnum.id.name());
+            }
+            entityMap.remove(TableInfoEnum.id.name());
+        }
+        // 设置实体类信息
+        map.put(TableInfoEnum.ENTITY_MAP.name(), entityMap);
+        // 初始化基本信息
+        map.putAll(setMap2(id, entityMap.keySet(), tableInfo));
+        return map;
+    }
+
+    // 查询/删除
+    public static Map<String, Object> setMap2(Object id, Collection<String> tableColumns, TableInfo tableInfo) {
+        Map<String, Object> map = new HashMap<>();
+        // 缓存中获取表名称
         map.put(TableInfoEnum.TABLE_NAME.name(), tableInfo.getTableName());
         // 添加id
         if (!Objects.isNull(id)) {
@@ -83,22 +103,10 @@ public class MapUtils {
         // 判断自定义列还是默认, 为 null 使用默认
         if (tableColumns != null) {
             // 添加列
-            map.put(TableInfoEnum.TABLE_COLUMN.name(), String.join(",", tableColumns));
+            map.put(TableInfoEnum.TABLE_COLUMN.name(), TableInfoHelper.tableColumns(tableColumns));
         } else {
             map.put(TableInfoEnum.TABLE_COLUMN.name(), tableInfo.getTableColumns());
         }
-        // 查询/删除 obj为Null
-        if (!Objects.isNull(obj)) {
-            Map<String, Object> entityMap = beanToMap(obj, clazz, excludeId, excludeNull, tableInfo.getTableColumnList());
-            /*
-             * 不排除id并且id为null, 则使用IdWorker生成主键.
-             */
-            if (!excludeId && entityMap.get(TableInfoEnum.id.name()) == null)
-                entityMap.put(TableInfoEnum.id.name(), IdWorker.getId());
-            // 设置实体类信息
-            map.put(TableInfoEnum.ENTITY_MAP.name(), entityMap);
-        }
         return map;
     }
-
 }

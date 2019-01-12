@@ -1,4 +1,4 @@
-package com.ck.customcrud.enhance.toolkit;
+package com.ck.enhance.toolkit;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

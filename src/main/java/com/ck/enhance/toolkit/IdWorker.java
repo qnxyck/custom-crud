@@ -1,7 +1,7 @@
-package com.ck.customcrud.enhance.toolkit;
+package com.ck.enhance.toolkit;
 
 
-import com.ck.customcrud.enhance.toolkit.support.Sequence;
+import com.ck.enhance.toolkit.support.Sequence;
 
 import java.util.UUID;
 

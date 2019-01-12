@@ -1,14 +1,15 @@
-package com.ck.customcrud.enhance.toolkit;
+package com.ck.enhance.toolkit;
 
 
-import com.ck.customcrud.enhance.annotations.TableExcludeColumns;
-import com.ck.customcrud.enhance.annotations.TableName;
+import com.ck.enhance.annotations.TableExcludeColumns;
+import com.ck.enhance.annotations.TableName;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ui.Model;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -91,13 +92,12 @@ public class TableInfoHelper {
             }
         }
 
-        String tableColumns = tableColumnList.stream()
+        tableInfo.setTableColumnList(tableColumnList);
+        tableInfo.setTableColumns(tableColumnList.stream()
                 // 驼峰转换
                 .map(s -> StringUtils.humpConversion(s, false))
                 // 分割数据
-                .collect(Collectors.joining(", "));
-        tableInfo.setTableColumnList(tableColumnList);
-        tableInfo.setTableColumns(tableColumns);
+                .collect(Collectors.joining(", ")));
     }
 
     /**
@@ -119,6 +119,15 @@ public class TableInfoHelper {
      */
     public static Map<Class<?>, TableInfo> getTableInfoCache() {
         return TABLE_INFO_CACHE;
+    }
+
+
+    public static String tableColumns(Collection<String> list) {
+        return list.stream()
+                // 驼峰转换
+                .map(s -> StringUtils.humpConversion(s, false))
+                // 分割数据
+                .collect(Collectors.joining(", "));
     }
 
 }

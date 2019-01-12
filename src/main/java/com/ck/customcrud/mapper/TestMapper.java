@@ -1,7 +1,7 @@
 package com.ck.customcrud.mapper;
 
-import com.ck.customcrud.enhance.Interfaces.BaseMapper;
 import com.ck.customcrud.entity.TestUsers;
+import com.ck.enhance.Interfaces.BaseMapper;
 
 /**
  * @author 陈坤

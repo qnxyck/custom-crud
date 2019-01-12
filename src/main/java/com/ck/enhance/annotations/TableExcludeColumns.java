@@ -1,4 +1,4 @@
-package com.ck.customcrud.enhance.annotations;
+package com.ck.enhance.annotations;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
